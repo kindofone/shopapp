@@ -2,7 +2,7 @@ import React from 'react';
 import './Product.css';
 
 function Product({product, addToCart}) {
-  const {title, price, description, category, image} = product;
+  const {title, description, category, image} = product;
 
   return (
     <div className='product'>
@@ -10,7 +10,7 @@ function Product({product, addToCart}) {
       <span className='product-category'>{category}</span>
       <h3>{title}</h3>
       <p>{description}</p>
-      <button onClick={() => addToCart(product)}>Buy ${price}</button>
+      <button onClick={() => addToCart(product)}>Buy ${product.getPrice()}</button>
     </div>
   )
 }

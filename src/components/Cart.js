@@ -1,21 +1,11 @@
 import React from 'react';
 import './Cart.css';
+import CartItem from './CartItem';
 
-function Cart({cartItems}) {
+function Cart({cartItems, removeFromCart}) {
   return (
     <div className='cart'>
-      {cartItems.map(item => {
-        return (
-          <div className='cart-item' key={item.id}>
-            <img src={item.image} className='cart-item-image' />
-            <div className='cart-item-details'>
-              <h3>{item.title}</h3>
-              <div>${item.price}</div>
-              <div>Quantity: {item.quantity}</div>
-            </div>
-          </div>
-        );
-      })}
+      {cartItems.map(item => <CartItem key={item.id} item={item} removeFromCart={removeFromCart} />)}
     </div>
   )
 }
