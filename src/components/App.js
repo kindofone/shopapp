@@ -3,6 +3,7 @@ import Products from './Products';
 import React, { useCallback, useState } from 'react';
 import Cart from './Cart';
 import useFetch from '../hooks/useFetch';
+import CategorySelector from './CategorySelector';
 
 class Product {
   #price = 0;
@@ -36,7 +37,11 @@ class CartItem extends Product {
 }
 
 function App() {
+  const [cartItems, setCartItems] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
   const catalog = useFetch("https://fakestoreapi.com/products")
+    .filter(product => selectedCategory !== "all" ? product.category === selectedCategory : true)
     .map(product => new Product(
       product.category,
       product.description,
@@ -46,7 +51,6 @@ function App() {
       product.rating,
       product.title,
     ));
-  const [cartItems, setCartItems] = useState([]);
 
   console.log("App rendering");
 
@@ -79,6 +83,7 @@ function App() {
     <div className="container">
       {catalog.length === 0 ? "Loading..." : (
         <>
+          <CategorySelector selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
           <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
           <Products catalog={catalog} addToCart={addToCart} />
         </>
