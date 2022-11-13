@@ -1,28 +1,11 @@
 import './App.css';
 import Products from './Products';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Cart from './Cart';
-import useFetch from '../hooks/useFetch';
+import Header from './Header';
 import CategorySelector from './CategorySelector';
-
-class Product {
-  #price = 0;
-
-  constructor(category, description, id, image, price, rating, title) {
-    this.category = category;
-    this.description = description;
-    this.id = id;
-    this.image = image;
-    this.#price = price;
-    this.rating = rating;
-    this.title = title;
-  }
-
-  getPrice() {
-    const price = this.category === "electronics" ? this.#price * 0.9 : this.#price;
-    return parseFloat(price.toFixed(2));
-  }
-}
+import useProducts, { Product } from '../hooks/useProducts';
+import {ThemeProvider} from '../contexts/ThemeContext';
 
 class CartItem extends Product {
   constructor(id, image, price, title, quantity) {
@@ -39,18 +22,7 @@ class CartItem extends Product {
 function App() {
   const [cartItems, setCartItems] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
-
-  const catalog = useFetch("https://fakestoreapi.com/products")
-    .filter(product => selectedCategory !== "all" ? product.category === selectedCategory : true)
-    .map(product => new Product(
-      product.category,
-      product.description,
-      product.id,
-      product.image,
-      product.price,
-      product.rating,
-      product.title,
-    ));
+  const products = useProducts(selectedCategory);
 
   console.log("App rendering");
 
@@ -80,15 +52,18 @@ function App() {
   });
 
   return (
-    <div className="container">
-      {catalog.length === 0 ? "Loading..." : (
-        <>
-          <CategorySelector selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
-          <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
-          <Products catalog={catalog} addToCart={addToCart} />
-        </>
-      )}
-    </div>
+    <ThemeProvider>
+      <div className="container">
+        <Header title="Hello!" />
+        {products.length === 0 ? "Loading..." : (
+          <>
+            <CategorySelector selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+            <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
+            <Products catalog={products} addToCart={addToCart} />
+          </>
+        )}
+      </div>
+    </ThemeProvider>
   );
 }
 

@@ -1,11 +1,13 @@
 import React from 'react';
+import { useTheme } from '../contexts/ThemeContext';
 import './Product.css';
 
 function Product({product, addToCart}) {
+  const {color, font} = useTheme();
   const {title, description, category, image} = product;
 
   return (
-    <div className='product'>
+    <div className='product' style={{color, fontFamily: font}}>
       <img className='product-image' src={image} />
       <span className='product-category'>{category}</span>
       <h3>{title}</h3>
