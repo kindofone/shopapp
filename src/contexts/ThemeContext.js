@@ -1,21 +1,45 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useReducer, useState } from 'react';
 
 const Context = React.createContext('light');
 
 export const COLORS = ['black', 'red', 'rebeccapurple'];
 export const FONTS = ['Arial', 'Times New Roman', 'Comic Sans MS'];
 
+export const CHANGED_COLOR_ACTION = 'changed_color';
+export const CHANGED_FONT_ACTION = 'changed_font';
+
+function reducer(state, action) {
+  switch (action.type) {
+    case CHANGED_COLOR_ACTION:
+      {
+        return {
+          ...state,
+          color: action.payload,
+        };
+      }
+
+    case CHANGED_FONT_ACTION:
+      {
+        return {
+          ...state,
+          font: action.payload,
+        };
+      }
+  }
+}
+
 function ThemeProvider(props) {
   const {children} = props;
-  const [color, setColor] = useState(COLORS[0]);
-  const [font, setFont] = useState(FONTS[0]);
+  const [state, dispatch] = useReducer(reducer, {
+    color: COLORS[0],
+    font: FONT[0],
+  });
 
   return (
     <Context.Provider value={{
-      color,
-      font,
-      setThemeColor: setColor,
-      setThemeFont: setFont,
+      state,
+      setThemeColor: newColor => dispatch({type: CHANGED_COLOR_ACTION, payload: newColor}),
+      setThemeFont: newFont => dispatch({type: CHANGED_FONT_ACTION, payload: newFont}),
     }}>
       {children}
     </Context.Provider>
