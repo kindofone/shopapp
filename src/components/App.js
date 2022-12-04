@@ -24,8 +24,6 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const products = useProducts(selectedCategory);
 
-  console.log("App rendering");
-
   const removeFromCart = useCallback((product) => {
     const newCartItems = cartItems.filter(item => item.id !== product.id);
     setCartItems(newCartItems);
