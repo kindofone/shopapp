@@ -1,21 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 function CartItem({item, removeFromCart}) {
   const {id, image, title, quantity, price} = item;
 
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      console.log(title);
-    }, 5000);
-
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, []);
-
   return (
     <div className='cart-item' key={id}>
-      <img src={image} className='cart-item-image' />
+      <img alt={title} src={image} className='cart-item-image' />
       <div className='cart-item-details'>
         <h3>{title} <button onClick={() => removeFromCart(item)}>-</button></h3>
         <div>${price}</div>
