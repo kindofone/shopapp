@@ -1,6 +1,6 @@
 import './App.css';
 import Products from './Products';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Cart from './Cart';
 import Header from './Header';
 import CategorySelector from './CategorySelector';
@@ -27,7 +27,7 @@ function App() {
   const removeFromCart = useCallback((product) => {
     const newCartItems = cartItems.filter(item => item.id !== product.id);
     setCartItems(newCartItems);
-  });
+  }, [cartItems]);
 
   const addToCart = useCallback((product) => {
     let newCartItems = [...cartItems];
@@ -47,7 +47,7 @@ function App() {
     }
 
     setCartItems(newCartItems);
-  });
+  }, [cartItems]);
 
   return (
     <ThemeProvider>

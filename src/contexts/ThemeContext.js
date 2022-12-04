@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useState } from 'react';
+import React, { useContext, useReducer } from 'react';
 
 const Context = React.createContext('light');
 
@@ -25,6 +25,13 @@ function reducer(state, action) {
           font: action.payload,
         };
       }
+
+      default:
+        {
+          return {
+            ...state,
+          };
+        }
   }
 }
 
@@ -32,7 +39,7 @@ function ThemeProvider(props) {
   const {children} = props;
   const [state, dispatch] = useReducer(reducer, {
     color: COLORS[0],
-    font: FONT[0],
+    font: FONTS[0],
   });
 
   return (
